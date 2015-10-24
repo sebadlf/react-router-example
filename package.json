@@ -1,0 +1,21 @@
+{
+  "name": "react-router-example",
+  "version": "1.0.0",
+  "description": "React Router usage using gulp and browserify",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sebastian de la Fuente",
+  "license": "ISC",
+  "dependencies": {
+    "browserify": "^11.2.0",
+    "express": "^4.13.3",
+    "gulp": "^3.9.0",
+    "react": "^0.14.0",
+    "react-dom": "^0.14.0",
+    "react-router": "^1.0.0-rc3",
+    "reactify": "^1.1.1",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}
