@@ -1,54 +1,71 @@
+'use strict';
+
 var React = require('react');
 var ReactDOM = require('react-dom');
-var qwest = require('qwest');
-var List = require('./list');
+var Router = require('react-router').Router;
+var Route = require('react-router').Route;
+var IndexRoute = require('react-router').IndexRoute;
+var NotFoundRoute = require('react-router').NotFoundRoute;
+var Redirect = require('react-router').NotFoundRoute;
+var Link = require('react-router').Link;
+var History = require('react-router').History;
+
+var createHistory = require('history').createHistory;
+var useBasename = require('history').useBasename;
+
+var api = require('./services/api');
+
+const history = useBasename(createHistory)({
+  basename: '/'
+});
 
 var App = React.createClass({
-	getInitialState: function() {
-		return {
-			users: []
-		};
-	},
-	getUsers: function(){
-		var promise = new Promise(function(resolve, reject){
-			qwest.get('/user').then(
-			function(xhr, response) {
-				resolve(response);
-			},
-			function(xhr, error) {
-				reject(error);
-			});
-		});
-
-		return promise;
-	},
-	getUserInfo: function(userId){
-		var promise = new Promise(function(resolve, reject){
-			qwest.get('/user/' + userId).then(
-			function(xhr, response) {
-				resolve(response);
-			},
-			function(xhr, error) {
-				reject(error);
-			});
-		});
-
-		return promise;
-	},
-	componentDidMount: function() {
-		var self = this;
-		this.getUsers().then(
-		function(users) {
-			self.setState({
-				users: users
-			});
-		});
-	},
 	render: function() {
 		return (
-			<List users={this.state.users} getUserInfo={this.getUserInfo} />
+			<div className="container">
+
+				<nav className="navbar navbar-inverse navbar-fixed-top">
+					<div className="container">
+						<div className="navbar-header">
+							<Link className="navbar-brand" to="/">Github Group</Link>
+						</div>
+						<div id="navbar" className="navbar-collapse collapse">
+							<ul className="nav navbar-nav">
+								<li><Link to="edit">Edit</Link></li>
+								<li><Link to="about">About</Link></li>
+						    	{
+									!api.isLogedIn() ? <li><Link to="login">Login</Link></li> : null
+						    	}
+							</ul>
+						</div>
+					</div>
+				</nav>
+
+				{this.props.children || "Welcome to your Inbox"}
+			</div>
+
 		);
 	}
 });
 
-ReactDOM.render(<App/>, document.getElementById('app'));
+function requireAuth(nextState, replaceState) {
+  	if (!api.isLogedIn()){
+		replaceState({ nextPathname: nextState.location.pathname }, '/login')
+  	}
+}
+
+//<Redirect from="edit-all" to="edit" />
+
+ReactDOM.render((
+  <Router history={history}>
+    <Route path="/" component={App}>
+    	<IndexRoute component={require('./list/list')} />
+    	<Route path="edit" component={require('./listEdit/listEdit')}  onEnter={requireAuth}  />
+    	<Route path="login" component={require('./login')}/>
+		<Route path="about" component={require('./about/about')} />
+		<Route path="*" component={require('./notFoundPage')}/>
+    </Route>
+  </Router>
+), document.getElementById('app'))
+
+//ReactDOM.render(<App/>, document.getElementById('app'));

@@ -15,10 +15,11 @@
     "gulp": "^3.9.0",
     "gulp-live-server": "0.0.29",
     "history": "^1.12.5",
+    "promise": "^7.0.4",
     "qwest": "^2.2.2",
-    "react": "^0.14.0",
+    "react": "^0.14.2",
     "react-dom": "^0.14.0",
-    "react-router": "^1.0.0-rc3",
+    "react-router": "*",
     "request": "^2.65.0",
     "vinyl-source-stream": "^1.1.0"
   }

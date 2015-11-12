@@ -5,7 +5,7 @@ import { createHistory, useBasename } from 'history'
 import auth from './auth'
 
 const history = useBasename(createHistory)({
-  basename: '/auth-flow'
+  basename: '/'
 })
 
 var App = React.createClass({
