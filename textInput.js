@@ -12,6 +12,7 @@ var Input = React.createClass({
 		value: React.PropTypes.string,
 		error: React.PropTypes.string
 	},
+
 	render: function () {
 		var wrapperClass = 'form-group';
 		if (this.props.error && this.props.error.lenght > 0){
